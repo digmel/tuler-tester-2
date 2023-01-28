@@ -53,7 +53,7 @@ function App() {
 
   useEffect(() => {
     runCoco();
-  }, [runCoco]);
+  }, [isMobile]);
 
   const videoConstraints = isMobile
     ? {
