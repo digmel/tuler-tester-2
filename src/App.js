@@ -53,7 +53,9 @@ function App() {
 
   useEffect(() => {
     runCoco();
-  }, [isMobile]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const videoConstraints = isMobile
     ? {
