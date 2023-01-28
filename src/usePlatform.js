@@ -10,7 +10,7 @@ export const usePlatform = () => {
     } else {
       setIsMobile(false);
     }
-  }, [width]);
+  }, []);
 
   return { isMobile };
 };
