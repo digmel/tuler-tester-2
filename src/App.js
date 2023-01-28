@@ -5,10 +5,12 @@ import * as cocossd from "@tensorflow-models/coco-ssd";
 import Webcam from "react-webcam";
 import "./App.css";
 import { drawRect } from "./utilities";
+import { usePlatform } from "./usePlatform";
 
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const { isMobile } = usePlatform();
 
   // Main function
   const runCoco = async () => {
@@ -45,18 +47,29 @@ function App() {
 
       // Draw mesh
       const ctx = canvasRef.current.getContext("2d");
-      drawRect(obj, ctx); 
+      drawRect(obj, ctx);
     }
   };
 
-  useEffect(()=>{runCoco()},[]);
+  useEffect(() => {
+    runCoco();
+  }, []);
+
+  const videoConstraints = isMobile
+    ? {
+        facingMode: { exact: "environment" },
+      }
+    : {
+        facingMode: "user",
+      };
 
   return (
     <div className="App">
       <header className="App-header">
         <Webcam
           ref={webcamRef}
-          muted={true} 
+          muted={true}
+          videoConstraints={videoConstraints}
           style={{
             position: "absolute",
             marginLeft: "auto",
