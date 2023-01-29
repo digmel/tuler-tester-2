@@ -66,6 +66,32 @@ function App() {
         facingMode: "user",
       };
 
+  const webStyle = {
+    position: "absolute",
+    marginLeft: "auto",
+    marginRight: "auto",
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    zindex: 9,
+    width: 640,
+    height: 480,
+  };
+
+  const mobileStyle = {
+    position: "absolute",
+    marginLeft: 0,
+    marginRight: 0,
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    zindex: 9,
+    width: window.innerWidth,
+    height: 480,
+  };
+
+  const cameraStyle = isMobile ? mobileStyle : webStyle;
+
   return (
     <div className="App">
       <header className="App-header">
@@ -73,33 +99,10 @@ function App() {
           ref={webcamRef}
           muted={true}
           videoConstraints={videoConstraints}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
+          style={cameraStyle}
         />
 
-        <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 8,
-            width: 640,
-            height: 480,
-          }}
-        />
+        <canvas ref={canvasRef} style={cameraStyle} />
       </header>
     </div>
   );
