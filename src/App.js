@@ -1,5 +1,5 @@
 // Import dependencies
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import * as tf from "@tensorflow/tfjs";
 import * as cocossd from "@tensorflow-models/coco-ssd";
@@ -7,11 +7,13 @@ import Webcam from "react-webcam";
 import "./App.css";
 import { drawRect } from "./utilities";
 import { usePlatform } from "./usePlatform";
+import { TailSpin } from "react-loader-spinner";
 
 function App() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const { isMobile } = usePlatform();
+  const [isLoading, setIsLoading] = useState(true);
 
   // Main function
   const runCoco = async () => {
@@ -21,6 +23,8 @@ function App() {
     setInterval(() => {
       detect(net);
     }, 10);
+
+    return true;
   };
 
   const detect = async (net) => {
@@ -53,7 +57,7 @@ function App() {
   };
 
   useEffect(() => {
-    runCoco();
+    runCoco().then((res) => setIsLoading(!res));
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -95,12 +99,25 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <Webcam
-          ref={webcamRef}
-          muted={true}
-          videoConstraints={videoConstraints}
-          style={cameraStyle}
-        />
+        {isLoading ? (
+          <TailSpin
+            height="80"
+            width="80"
+            color="#ffff"
+            ariaLabel="tail-spin-loading"
+            radius="1"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+          />
+        ) : (
+          <Webcam
+            ref={webcamRef}
+            muted={true}
+            videoConstraints={videoConstraints}
+            style={cameraStyle}
+          />
+        )}
 
         <canvas ref={canvasRef} style={cameraStyle} />
       </header>
